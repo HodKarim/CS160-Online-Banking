@@ -4,6 +4,11 @@ import SignupPage from "./page";
 vi.mock("@/utils/supabase/client", () => ({
   createClient: () => ({
     auth: {
+      getUser: () =>
+        Promise.resolve({
+          data: { user: null },
+          error: null,
+        }),
       signUp: () =>
         Promise.resolve({
           data: { user: { id: "test-user-id" } },
@@ -84,7 +89,7 @@ describe("SignupPage", () => {
 
     // Check placeholders
     expect(
-      screen.getByPlaceholderText(/555-123-4567 or \(555\) 123-4567/),
+      screen.getByPlaceholderText(/\(555\) 123-4567 or 555-123-4567/),
     ).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(/12345 or 12345-6789/),
